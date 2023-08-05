@@ -31,7 +31,6 @@ def upload(request):
                 response_format="text",
                 language="en"
             )
-        print(script)
         return HttpResponse(script)
     return HttpResponse("Failed")
 
@@ -44,7 +43,6 @@ def home(request):
             ]
         if request.method == 'POST':
             # get the prompt from the form
-            str1= "Here is who I am.'"
             auth= request.POST.get('author')
             bio= request.POST.get('bio')
             mission= request.POST.get('mission')
@@ -52,7 +50,8 @@ def home(request):
             if first_flag == 1:
                 prompt = mission
             else :
-                prompt= str1+auth+"."+bio+"'. "+mission
+                prompt= "Here is who I am.'"+bio+"."+mission+"."+"'Write a song based on my information based on the song which has this title or wrriten by this man.'"+auth
+            print(prompt)
             first_flag  = 1
             # get the temperature from the form
             temperature = float(request.POST.get('temperature', 0.1))
@@ -73,6 +72,7 @@ def home(request):
             request.session['messages'].append({"role": "assistant", "content": formatted_response})
             request.session.modified = True
             # redirect to the home page
+            print(request.session['messages'])
             context = {
                 'messages': request.session['messages'],
                 'prompt': '',
